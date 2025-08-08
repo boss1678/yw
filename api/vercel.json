@@ -1,0 +1,14 @@
+{
+  "builds": [
+    {
+      "src": "api/get_song.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/get_song",
+      "dest": "api/get_song.py"
+    }
+  ]
+}
