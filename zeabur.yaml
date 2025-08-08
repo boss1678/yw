@@ -1,0 +1,10 @@
+project:
+yw-api
+services:
+  - name: douyin-api
+    type: web
+    build:
+      type: python
+      start: python app.py
+    ports:
+      - 8000
