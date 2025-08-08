@@ -1,11 +1,17 @@
 project:
   name: yw-api
+
 services:
   - name: douyin-api
     type: web
     build:
       type: python
-      start: python app.py
+      start: gunicorn app:app --bind 0.0.0.0:8000
+      commands:
+
+        - pip install -r requirements.txt
     ports:
       - 8000
+
+
 

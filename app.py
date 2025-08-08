@@ -8,22 +8,35 @@ app.run() 启动服务
 
 from flask import Flask, request, jsonify
 import requests
+from pypinyin import lazy_pinyin
 import json
+from bs4 import BeautifulSoup
+from urllib.parse import urljoin
+
 app = Flask(__name__)
 
 
 def get_song(word):
-
-    url = 'https://www.baidu.com'
-    resp = requests.get(url).text
-    return {
-        'resp': resp
+    pinyin_list = lazy_pinyin(word)
+    result = ''.join(pinyin_list)
+    headers = {
+        'referer': 'https: // www.shicimingju.com /',
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
     }
+    url = f'https://www.shicimingju.com/book/{result}.html'
+    resp = requests.get(url, headers=headers)
+    resp.encoding = 'utf-8'
+    soup = BeautifulSoup(resp.text, 'html.parser')
+    til_urls = [urljoin(url, sp.get('href')) for sp in soup.find('div', class_="list").find_all('a')]
+    dic = {
+        'til_urls': til_urls
+    }
+    return dic
 
 
-@app.route('/get_song', methods=['GET'])
+@app.route('/get_song', methods=['POST', 'GET'])
 def song():
-    word = request.args.get('word')
+    word = request.args.get('input')
     try:
         result = get_song(word)
         return jsonify({'results': result})
@@ -33,4 +46,4 @@ def song():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000)
-    # print(get_song('诺言'))
+    # get_song('三国演义')
