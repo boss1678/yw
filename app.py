@@ -13,6 +13,8 @@ import json
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 from DrissionPage import ChromiumOptions, ChromiumPage
+# 导包
+import logging
 
 app = Flask(__name__)
 
