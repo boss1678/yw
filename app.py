@@ -28,6 +28,7 @@ def get_song(word):
     song_url_lst = []
     try:
         co = ChromiumOptions()
+        co.set_proxy('http://127.0.0.1:10808')
         co.set_argument('referer', "https://www.douyin.com/")
         co.set_user_agent(
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36')
@@ -92,5 +93,5 @@ def song():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
-    # print(get_song('情罪'))
+    # app.run(host='0.0.0.0', port=5000)
+    print(get_song('情罪'))
