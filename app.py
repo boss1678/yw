@@ -28,6 +28,8 @@ def get_song(word):
     song_url_lst = []
     try:
         co = ChromiumOptions()
+        co.set_argument('--window-size=1920,1080')
+        co.set_argument('--start-minimized')  # 最小化
         co.set_argument('referer', "https://www.douyin.com/")
         co.set_user_agent(
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36')
