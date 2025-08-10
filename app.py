@@ -42,8 +42,8 @@ def get_song(word):
     song_urls = []
     co = ChromiumOptions()
     co.headless(True)
-    co.headless(True)
-    co.set_browser_path('/usr/bin/google-chrome')  # 确保路径正确
+    co.set_browser_path('/usr/bin/chromium-browser')
+    co.set_argument('--headless=new')
     co.set_argument('--no-sandbox')
     co.set_argument('--disable-gpu')
     co.set_argument('--disable-dev-shm-usage')
