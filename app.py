@@ -43,7 +43,7 @@ def get_song(word):
     co = ChromiumOptions()
     co.headless(True)
     co.set_argument('--remote-debugging-port=9222')
-    co.set_browser_path('/usr/bin/chromium-browser')
+    co.set_browser_path('/usr/bin/google-chrome')
     co.set_argument('--headless=new')
     co.set_argument('--no-sandbox')
     co.set_argument('--disable-gpu')
