@@ -35,7 +35,7 @@ def get_song(word):
     resp = requests.get(url, headers=headers)
     resp.encoding = 'utf-8'
     soup = BeautifulSoup(resp.text, 'html.parser')
-    urls = [urljoin(url, sp.get('href')) for sp in soup.find('div', class_="list").find_all('a')]
+    urls = [sp.get_text() for sp in soup.find('div', class_="list").find_all('a')]
     return {
         'urls': urls
     }
