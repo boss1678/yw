@@ -42,6 +42,7 @@ def get_song(word):
     song_urls = []
     co = ChromiumOptions()
     co.headless(True)
+    co.set_argument('--remote-debugging-port=9222')
     co.set_browser_path('/usr/bin/chromium-browser')
     co.set_argument('--headless=new')
     co.set_argument('--no-sandbox')
@@ -116,5 +117,5 @@ def song():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
-    # print(get_song('天际'))
+    # app.run(host='0.0.0.0', port=5000, debug=True)
+    print(get_song('天际'))
