@@ -59,13 +59,14 @@ def get_song(word):
     page.listen.start('general/search')
     page.get(url)
     page.wait(2)
-    while 1:
-        page.run_js('window.scrollBy(0, 1200)')
-        page.wait(3)
-        if page.run_js(
-                'return (window.innerHeight + document.scrollingElement.scrollTop) >= document.scrollingElement.scrollHeight - 10'):
-            break
-        try:
+    try:
+        while 1:
+            page.run_js('window.scrollBy(0, 1200)')
+            page.wait(3)
+            if page.run_js(
+                    'return (window.innerHeight + document.scrollingElement.scrollTop) >= document.scrollingElement.scrollHeight - 10'):
+                break
+
             while 1:
                 res = page.listen.wait(timeout=0.5)
                 if not res or isinstance(res, bool):
@@ -93,12 +94,15 @@ def get_song(word):
                     song_urls.append(song_url)
                     if len(song_urls) >= 5:
                         break
-            page.quit()
-            return {
-                'song_urls': song_urls
-            }
-        except Exception as e:
-            print(e)
+            if len(song_urls) >= 5:
+                break
+    except Exception as e:
+        print(e)
+    finally:
+        page.quit()
+    return {
+        'song_urls': song_urls
+    }
 
 
 @app.route('/')
