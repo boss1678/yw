@@ -4,41 +4,47 @@ app = Flask(__name__) 创建了应用
 @app.route('/') 是注册路由
 
 app.run() 启动服务
+from DrissionPage import ChromiumOptions
+
+def get_chrome_options():
+    co = ChromiumOptions()
+
+    # ✅ 启用远程调试端口（必须）
+    co.set_argument('--remote-debugging-port=9222')
+
+    # ✅ 禁用沙箱（适用于 root 用户）
+    co.set_argument('--no-sandbox')
+
+    # ✅ 避免共享内存问题（服务器常见）
+    co.set_argument('--disable-dev-shm-usage')
+
+    # ✅ 无头模式（服务器无图形界面时必须）
+    co.set_argument('--headless')
+
+    # ✅ 禁用 GPU 加速（无头模式下建议）
+    co.set_argument('--disable-gpu')
+
+    # ✅ 禁用扩展（提高稳定性）
+    co.set_argument('--disable-extensions')
+
+    # ✅ 禁用信息栏（防止“Chrome 正由自动化软件控制”提示）
+    co.set_argument('--disable-infobars')
+
+    return co
+
 """
 
 from flask import Flask, request, jsonify
-import requests
-from pypinyin import lazy_pinyin
-import json
-from bs4 import BeautifulSoup
-from urllib.parse import urljoin
 from DrissionPage import ChromiumOptions, ChromiumPage
-# 导包
-import logging
 
 app = Flask(__name__)
 
 
-# 修改函数
 def get_song(word):
     """
     歌曲下载
     :return:
     """
-    # headers = {
-    #     'referer': 'https: // www.shicimingju.com /',
-    #     "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
-    # }
-    # pinyin_list = lazy_pinyin(word)
-    # pinyin_str = ''.join(pinyin_list)
-    # url = f'https://www.shicimingju.com/book/{pinyin_str}.html'
-    # resp = requests.get(url, headers=headers)
-    # resp.encoding = 'utf-8'
-    # soup = BeautifulSoup(resp.text, 'html.parser')
-    # urls = [sp.get_text() for sp in soup.find('div', class_="list").find_all('a')]
-    # return {
-    #     'urls': urls
-    # }
     song_urls = []
     co = ChromiumOptions()
     co.headless(True)
@@ -122,4 +128,3 @@ def song():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
-    # print(get_song('天际'))
