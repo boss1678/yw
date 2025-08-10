@@ -34,9 +34,7 @@ def get_song(word):
         co.set_argument('--disable-software-rasterizer')
         co.set_argument('--disable-dev-shm-usage')
         co.set_argument('--window-size=1920,1080')
-        co.set_argument('--remote-debugging-port=9222')  # 新增，指定调试端口
         co.set_argument('--user-data-dir=/tmp/chrome-user-data')
-        # co.set_argument('referer', "https://www.douyin.com/")
         co.set_user_agent(
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36')
         page = ChromiumPage(co)
