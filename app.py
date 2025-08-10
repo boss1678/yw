@@ -54,8 +54,6 @@ def get_song(word):
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36')
     page = ChromiumPage(co)
     url = f'https://www.douyin.com/search/{word}?type=general'
-    if url:
-        print(f'准备下载 --> {word}....')
     page.listen.start('general/search')
     page.get(url)
     page.wait(2)
@@ -66,7 +64,6 @@ def get_song(word):
             if page.run_js(
                     'return (window.innerHeight + document.scrollingElement.scrollTop) >= document.scrollingElement.scrollHeight - 10'):
                 break
-
             while 1:
                 res = page.listen.wait(timeout=0.5)
                 if not res or isinstance(res, bool):
@@ -94,8 +91,8 @@ def get_song(word):
                     song_urls.append(song_url)
                     if len(song_urls) >= 5:
                         break
-                if len(song_urls) >= 5:
-                    break
+            if len(song_urls) >= 5:
+                break
     except Exception as e:
         print(e)
     finally:
@@ -122,4 +119,4 @@ def song():
 
 if __name__ == '__main__':
     # app.run(host='0.0.0.0', port=5000, debug=True)
-    print(get_song('天际'))
+    print(get_song('美食'))
