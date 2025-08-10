@@ -25,61 +25,20 @@ def get_song(word):
     歌曲下载
     :return:
     """
-    song_url_lst = []
-    try:
-        co.set_argument('--no-sandbox')
-        co.set_argument('--headless=new')
-        co.set_argument('--disable-gpu')
-        co.set_argument('--disable-software-rasterizer')
-        co.set_argument('--disable-dev-shm-usage')
-        co.set_argument('--window-size=1920,1080')
-        # co.set_argument('--remote-debugging-port=9222')  # 不用指定调试端口，代码自动启动
-        co.set_argument('--user-data-dir=/tmp/chrome-user-data')
-        co.set_user_agent(
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36')
-        page = ChromiumPage(co)
-        url = f'https://www.douyin.com/search/{word}?type=general'
-        page.listen.start('general/search')
-        page.get(url)
-        page.wait(2)
-        while 1:
-            page.run_js('window.scrollBy(0, 1500)')
-            page.wait(3)
-            if page.run_js(
-                    'return (window.innerHeight + document.scrollingElement.scrollTop) >= document.scrollingElement.scrollHeight - 10'):
-                break
-            while 1:
-                res = page.listen.wait(timeout=0.5)
-                if not res or isinstance(res, bool):
-                    break
-                resp = res.response.body
-                if not isinstance(resp, dict):
-                    continue
-                for i in resp['data']:
-                    if not i:
-                        continue
-                    aweme_info = i.get('aweme_info')
-                    if not aweme_info:
-                        continue
-                    video = aweme_info.get('video')
-                    if not video:
-                        continue
-                    play_addr = video.get('play_addr')
-                    if not play_addr:
-                        continue
-                    url_list = play_addr.get('url_list')
-                    if not url_list:
-                        continue
-                    song_url = url_list[0]
-                    song_url_lst.append(song_url)
-                    if len(song_url_lst) >= 5:
-                        break
-            break
-        page.quit()
-        return {'song_url_lst': song_url_lst}
-    except Exception as e:
-        logging.error(f'抓取失败: {e}')
-        return {'error': '抓取失败，请稍后重试'}
+    headers = {
+        'referer': 'https: // www.shicimingju.com /',
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+    }
+    pinyin_list = lazy_pinyin(word)
+    pinyin_str = ''.join(pinyin_list)
+    url = f'https://www.shicimingju.com/book/{pinyin_str}.html'
+    resp = requests.get(url, headers=headers)
+    resp.encoding = 'utf-8'
+    soup = BeautifulSoup(resp.text, 'html.parser')
+    urls = [urljoin(url, sp.get('href')) for sp in soup.find('div', class_="list").find_all('a')]
+    return {
+        'urls': urls
+    }
 
 
 @app.route('/')
@@ -99,4 +58,4 @@ def song():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
-    # print(get_song('情罪'))
+    # print(get_song('三国演义'))
