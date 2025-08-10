@@ -42,10 +42,13 @@ def get_song(word):
     song_urls = []
     co = ChromiumOptions()
     co.headless(True)
+    co.set_argument('--remote-debugging-port=9222')
     co.set_browser_path('/usr/bin/chromium-browser')
+    co.set_argument('--headless=new')
     co.set_argument('--no-sandbox')
     co.set_argument('--disable-gpu')
     co.set_argument('--disable-dev-shm-usage')
+    co.set_argument('--no-first-run')
     co.set_argument('--user-data-dir=/tmp/chrome-profile')
     co.set_user_agent(
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36')
@@ -91,8 +94,8 @@ def get_song(word):
                     song_urls.append(song_url)
                     if len(song_urls) >= 5:
                         break
-            if len(song_urls) >= 5:
-                break
+                if len(song_urls) >= 5:
+                    break
     except Exception as e:
         print(e)
     finally:
