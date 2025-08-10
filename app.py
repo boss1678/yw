@@ -42,11 +42,12 @@ def get_song(word):
     song_urls = []
     co = ChromiumOptions()
     co.headless(True)
-    co.set_browser_path('/usr/bin/google-chrome')
     co.headless(True)
-    co.set_argument('--remote-debugging-port=9222')
+    co.set_browser_path('/usr/bin/google-chrome')  # 确保路径正确
     co.set_argument('--no-sandbox')
     co.set_argument('--disable-gpu')
+    co.set_argument('--disable-dev-shm-usage')
+    co.set_argument('--no-first-run')
     co.set_argument('--user-data-dir=/tmp/chrome-profile')
     co.set_user_agent(
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36')
