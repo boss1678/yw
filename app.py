@@ -27,13 +27,13 @@ def get_song(word):
     """
     song_url_lst = []
     try:
-        co = ChromiumOptions()
         co.set_argument('--no-sandbox')
         co.set_argument('--headless=new')
         co.set_argument('--disable-gpu')
         co.set_argument('--disable-software-rasterizer')
         co.set_argument('--disable-dev-shm-usage')
         co.set_argument('--window-size=1920,1080')
+        # co.set_argument('--remote-debugging-port=9222')  # 不用指定调试端口，代码自动启动
         co.set_argument('--user-data-dir=/tmp/chrome-user-data')
         co.set_user_agent(
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36')
