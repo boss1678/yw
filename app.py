@@ -121,7 +121,7 @@ def song():
     word = request.args.get('input')
     try:
         result = get_song(word)
-        return jsonify({'results': result})
+        return jsonify({word: result})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
